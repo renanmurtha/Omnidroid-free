@@ -1,0 +1,32 @@
+{
+    "name": "omnidroid-v-x1",
+    "version": "1.0.0",
+    "description": "Bot da Twitch com integração Notion, NTFY e autenticação OAuth2",
+    "main": "index.js",
+    "scripts": {
+        "start": "cross-env NODE_ENV=production node index.js",
+        "dev": "cross-env NODE_ENV=development nodemon index.js"
+    },
+    "keywords": [
+        "twitch",
+        "bot",
+        "Notion",
+        "NTFY",
+        "oauth"
+    ],
+    "author": "Renan Murtha",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.6.8",
+        "dotenv": "^16.3.1",
+        "express": "^4.19.2",
+        "open": "^9.0.0",
+        "sqlite3": "^5.1.7",
+        "tmi.js": "^1.8.5",
+        "ws": "^8.16.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "nodemon": "^3.1.0"
+    }
+}

@@ -1,0 +1,19 @@
+[Unit] 
+Description=servico-node: omnidroid-v-x1
+
+[Service]
+User=orangepi
+Group=orangepi
+Environment=NODE_ENV=production
+WorkingDirectory=/var/twitch/Omnidroid-v-X1
+ExecStartPre=/bin/sh -c "npm install"
+ExecStart=/usr/bin/node index.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=omnidroid-v-x1
+
+
+[Install]
+WantedBy=multi-user.target
