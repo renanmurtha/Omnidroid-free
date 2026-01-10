@@ -10,7 +10,7 @@
 
 # 🤖 Omnidroids - Twitch Bot
 
-O **Omnidroids** é um bot de interação para a Twitch, focado no engajamento da comunidade através de minigames, integrações com o Notion para salvar anotações e utilitários de moderação.
+O **Omnidroids** é um bot de interação para a Twitch, focado no engajamento da comunidade através de minigames, gerenciamento de sorteios, integrações com o Notion para salvar anotações e utilitários de moderação.
 
 Esta versão (**Gratuita**, self-host) não inclui o sistema de sorteios, pois essa funcionalidade é de uso exclusivo do meu canal.  
 Ela serve como uma base para que você crie e mantenha sua própria implementação de acordo com a sua live.
@@ -38,12 +38,13 @@ Este projeto está licenciado sob a **GNU GPL v3**. Isso significa que você pod
 
 ### 🎮 Jogos e Interação
 
-- **!termo**: Jogo de adivinhação de palavras (estilo Termo / Wordle / Forca).
-  - `!termo iniciar`: Inicia uma nova partida (Mods/Broadcaster).
-  - `!termo letra <letra>`: Tenta uma letra individual.
-  - `!termo palavra <palavra>`: Tenta o palpite final.
-- **!previsao**: Executa o comando Oraculum.
-- **!sorte**: Solicita um biscoito da sorte.
+- **!termo**: Jogo de adivinhação (Estilo Termo / Forca).
+  - `!termo iniciar`: Inicia partida (Apenas Mods/Broadcaster).
+  - `!termo parar`: Encerra a partida atual (Apenas Mods/Broadcaster).
+  - `!termo letra <letra>`: Tenta adivinhar uma letra individual.
+  - `!termo palavra <palavra>` ou `!termo chute <palavra>`: Tenta o palpite final.
+- **!previsao**: Executa o comando Oraculum (Previsão baseada em usuários ativos).
+- **!sorte**: Solicita um biscoito da sorte para o usuário.
 
 ---
 
@@ -60,19 +61,19 @@ No terminal, acesse a pasta `games` e execute:
 
 ### 📝 Integração com Notion
 
-- **!anotar**: Salva notas gerais.
-- **!react**: Envia links validados para uma lista de reacts (com limite diário).
-- **!marcar**: Salva um assunto com o tempo atual da live (Uptime).
+- `!anotar <texto>`: Salva uma anotação geral (Possui cooldown de 1 min).
+- `!react <link>`: Salva links validados para reacts (Valida URL, possui limite diário e cooldown).
+- `!marcar <assunto>`: Salva o assunto junto com o **Uptime atual** da live (Apenas se a live estiver online).
 
 ---
 
 ### 🛠️ Utilitários e Moderação
 
-- **!clima <cidade>**: Retorna um link do Windy com a previsão do tempo.
-- **!aniversario**: Gerencia e parabeniza usuários por aniversários.
-- **Feliz Aniversário automático**: envia uma mensagem automática para quem está de aniversário no dia.
-- **!streamer <add|del>**: Gerencia streamers parceiros (Raid/Join).
-- **Boas-vindas automáticas** para novos usuários e reconhecimento de subs.
+- `!clima <cidade>`: Retorna o link do Windy com a localização sanitizada.
+- `!aniversario <DD/MM>` ou `!birthday <DD/MM>`: Gerencia a data de nascimento do usuário.
+- **Aniversariantes do dia**: Identificação automática ao entrar no chat (Join).
+- `!streamer <add|del> @usuario`: Gerencia a lista de streamers parceiros para saudações automáticas (Apenas Mods/Broadcaster).
+- **Reconhecimento de Subs**: Mensagens personalizadas para novos subs, resubs e subgifts.
 
 ---
 
@@ -123,10 +124,10 @@ Renomeie `.env.exemple` para `.env` e configure:
 
 ---
 
-## 🚀 Instalação
+## 📦 Instalação
 
 - **Clone o repositório** e acesse a pasta do projeto:
-  - `git clone <repo-url> && cd Omnidroid-free`
+  - `git clone https://github.com/renanmurtha/Omnidroid-free.git && cd Omnidroid-free`
 - **Verifique a versão do Node** (recomenda-se Node 18+):
   - `node -v`
 - **Instale as dependências** conforme o ambiente:
@@ -134,10 +135,10 @@ Renomeie `.env.exemple` para `.env` e configure:
   - `npm install` (Desenvolvimento local)
 - **Garanta o cross-env** em produção:
   - `npm install cross-env --save`
-- **Scripts disponíveis** no `package.json`:
-  - `npm run dev`: Inicia com nodemon em ambiente de desenvolvimento.
-  - `npm start`: Inicia com node em ambiente de produção.
-- **Alternativa via PM2** (Orquestrador):
+- **Scripts configurados** no `package.json`:
+  - `npm run dev`: Inicia via nodemon (Ambiente de desenvolvimento).
+  - `npm start`: Inicia via node (Ambiente de produção).
+- **Alternativa via PM2** (Servidor):
   - `pm2 start index.js --name omnidroids --env production`
 
 ---
