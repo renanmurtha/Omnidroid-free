@@ -143,8 +143,19 @@ function initTwitchBot() {
                 break;
             case '!aniversario':
             case '!birthday':
-                const inputData = args[1] ? args[1] : '';
-                await handleUserBirthdayCommand(client, channel, tags, inputData);
+                let update = false;
+                const birthday = args[1] ? args[1] : '';
+                let username = tags.username.toLowerCase();
+                const nameUpdate = args[2] ? args[2].toLowerCase() : '';
+
+                // Somente o dono do canal pode atualizar
+                if (username === channelName) {
+                    if (nameUpdate) {
+                        update = true;
+                        username = nameUpdate;
+                    }
+                }
+                await handleUserBirthdayCommand(client, channel, username, birthday, update);
                 break;
             case '!termo':
                 const termoCommand = args[1] ? args[1].toLowerCase() : '';

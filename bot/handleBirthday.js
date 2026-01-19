@@ -27,16 +27,35 @@ async function processQueue() {
 /**
  * Cadastra/atualiza aniversário do usuário.
  */
-async function handleUserBirthdayCommand(client, channel, tags, inputData) {
-    const username = tags.username.toLowerCase();
+async function handleUserBirthdayCommand(client, channel, username, inputData, update = false) {
     try {
-        const wasRegistered = await db._insertBirthday (username, inputData);
-        if (wasRegistered) {
-            enqueueBirthdayMessage(client, channel, `🎂 @${username}, seu aniversário foi registrado/atualizado com sucesso! 🗓️`);
-            console.log(`[Birthday]: ${username} cadastrou/atualizou aniversário (${inputData}).`);
-        } else {
-            enqueueBirthdayMessage(client, channel, `⚠️ @${username}, não foi possível registrar seu aniversário. Verifique o formato.`);
+        let logMessage = '';
+        const result = await db._insertBirthday(username, inputData, update);
+        switch (result) {
+            case 'insert':
+                enqueueBirthdayMessage(client, channel, `🎂 @${username}, seu aniversário foi registrado com sucesso! 🗓️`);
+                logMessage = `[Birthday]: Aniversário de ${username} registrado como ${inputData}.`;
+                break;
+            case 'update':
+                enqueueBirthdayMessage(client, channel, `✏️ @${username}, seu aniversário foi atualizado com sucesso! 🗓️`);
+                logMessage = `[Birthday]: Aniversário de ${username} atualizado para ${inputData}.`;
+                break;
+            case 'exists':
+                enqueueBirthdayMessage(client, channel, `ℹ️ @${username}, seu aniversário já está cadastrado.`);
+                logMessage = `[Birthday]: Aniversário de ${username} já estava cadastrado.`;
+                break;
+            case 'invalid':
+                enqueueBirthdayMessage(client, channel, `⚠️ @${username}, data inválida. Use o formato DD-MM ou MM-DD.`);
+                logMessage = `[Birthday]: Formato inválido fornecido por ${username}: ${inputData}.`;
+                break
+            default:
+                enqueueBirthdayMessage(client, channel, `⚠️ @${username}, formato inválido. Use DD-MM ou MM-DD.`);
+                logMessage = `[Birthday]: Formato inválido fornecido por ${username}: ${inputData}.`;
+                break;
         }
+
+        if (logMessage) console.log(logMessage);
+
     } catch (error) {
         console.error(`[Birthday Error]: Erro ao processar aniversário para ${username}:`, error.message);
         enqueueBirthdayMessage(client, channel, `🐞 @${username}, ocorreu um erro ao registrar seu aniversário. Tente novamente mais tarde.`);
@@ -49,7 +68,7 @@ async function handleUserBirthdayCommand(client, channel, tags, inputData) {
  */
 async function handleBirthdayOnJoin(client, channel, username) {
     try {
-        const message = await db._checkBirthdayOnJoin (username);
+        const message = await db._checkBirthdayOnJoin(username);
         if (message) {
             enqueueBirthdayMessage(client, channel, message);
             console.log(`[Birthday]: ${username} foi parabenizado hoje.`);

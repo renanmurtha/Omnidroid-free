@@ -69,11 +69,18 @@ No terminal, acesse a pasta `games` e execute:
 
 ### 🛠️ Utilitários e Moderação
 
-- `!clima <cidade>`: Retorna o link do Windy com a localização sanitizada.
-- `!aniversario <DD/MM>` ou `!birthday <DD/MM>`: Gerencia a data de nascimento do usuário.
-- **Aniversariantes do dia**: Identificação automática ao entrar no chat (Join).
-- `!streamer <add|del> @usuario`: Gerencia a lista de streamers parceiros para saudações automáticas (Apenas Mods/Broadcaster).
-- **Reconhecimento de Subs**: Mensagens personalizadas para novos subs, resubs e subgifts.
+
+`!clima <cidade>`: Retorna o link do Windy com a localização sanitizada.
+`!aniversario <DD/MM>`: Gerencia a data de nascimento do usuário.
+  - Usuários: definem o próprio aniversário `!aniversario 25/12`.
+  - Dono do canal: pode inserir seu seu aniversário como usuário comum; e atualizar o aniversário de qualquer usuário (incluindo o seu) usando `!aniversario <DD/MM> <username>`.
+  - Exemplo: `!aniversario 25/12 fulano` (apenas dono do canal pode atualizar de outro usuário).
+
+**Aniversariantes do dia**: Identificação automática ao entrar no chat (Join).
+
+`!streamer <add|del> @usuario`: Gerencia a lista de streamers parceiros para saudações automáticas (Apenas Mods/Broadcaster).
+
+**Reconhecimento de Subs**: Mensagens personalizadas para novos subs, resubs e subgifts.
 
 ---
 

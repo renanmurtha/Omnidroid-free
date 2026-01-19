@@ -2,6 +2,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const { fail } = require('assert');
 const path = require('path');
+const fs = require('fs'); // Necessário para criar a pasta automaticamente
 
 const { DATABASE_NAME, CHANNEL_NAME } = process.env;
 
@@ -11,7 +12,15 @@ const sanitizeAndFallback = (name) => {
 };
 const preferredName = ((DATABASE_NAME ?? '').trim() || (CHANNEL_NAME ?? '').trim());
 const databaseName = sanitizeAndFallback(preferredName);
-let DB_PATH = `bot/data/database/${databaseName}.db`;
+
+// AJUSTE DE CAMINHO: Usando path.resolve para garantir que o Node encontre a pasta
+const DB_DIR = path.resolve(__dirname, '../../data/database');
+const DB_PATH = path.join(DB_DIR, `${databaseName}.db`);
+
+// CRIAÇÃO AUTOMÁTICA DA PASTA: Resolve o erro SQLITE_CANTOPEN
+if (!fs.existsSync(DB_DIR)) {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+}
 
 // Variável para armazenar a instância do banco de dados conectada
 let dbInstance;
@@ -98,9 +107,10 @@ module.exports = {
     * Esta é uma função interna do módulo.
     * @param {string} username Nome de usuário.
     * @param {string} inputData Data enviada (dd/mm, mm-dd, etc).
+    * @param {boolean} update Se true, tenta atualizar um aniversário existente.
     * @returns {Promise<boolean>} True se inseriu/atualizou, false se já existia igual.
     */
-    _insertBirthday: async (username, inputData) => {
+    _insertBirthday: async (username, inputData, update = false) => {
         return new Promise((resolve, reject) => {
             if (!dbInstance) { reject(new Error('[database log] Banco de dados não conectado.')); return; }
 
@@ -124,18 +134,28 @@ module.exports = {
 
             const birthday = `${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
-            dbInstance.run(`
-            INSERT INTO user_birthdays (username, birthday)
-            VALUES (?, ?)
-            ON CONFLICT(username) DO UPDATE SET birthday=excluded.birthday;
-        `, [username, birthday], function (err) {
-                if (err) {
-                    console.error('[database log] Erro ao registrar aniversário:', err.message);
-                    reject(err);
-                } else {
-                    resolve(this.changes > 0);
+            // Constante para INSERT
+            const query_insert = `INSERT OR IGNORE INTO user_birthdays (username, birthday) VALUES (?, ?);`;
+
+            // Constante para UPDATE
+            const query_update = `UPDATE user_birthdays SET birthday = ? WHERE username = ?;`;
+
+            dbInstance.run(
+                update ? query_update : query_insert,
+                update ? [birthday, username] : [username, birthday],
+                function (err) {
+                    if (err) {
+                        console.error('[database log] Erro ao registrar aniversário:', err.message);
+                        reject(err);
+                    } else {
+                        if (this.changes > 0) {
+                            resolve(update ? 'update' : 'insert');
+                        } else {
+                            resolve('exists');
+                        }
+                    }
                 }
-            });
+            );
         });
     },
 
