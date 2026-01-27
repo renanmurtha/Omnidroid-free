@@ -130,7 +130,10 @@ function initTwitchBot() {
         if (self) return;
 
         const args = message.trim().split(' ');
-        const command = args[0].toLowerCase();
+        const command = args[0]?.toLowerCase(); // ? evita erro se args[0] for undefined
+        // Ignora mensagens que não são comandos
+        if (!command || (command[0] !== '!' && command[0] !== '$')) return;
+        
         const isBroadcaster = tags.badges?.broadcaster === '1';
         const isMod = tags.badges?.moderator === '1';
 
