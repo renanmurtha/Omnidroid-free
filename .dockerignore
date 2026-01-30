@@ -1,0 +1,31 @@
+# Node
+node_modules
+npm-debug.log
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# Env files
+.env.*
+
+# Build / coverage
+dist
+coverage
+
+# IDE
+.vscode
+.idea
+
+# Docs
+*.md
+# Database files
+*.db
+# Linux host services (systemd)
+service/

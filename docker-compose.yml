@@ -1,0 +1,31 @@
+services:
+  omnidroid_lite:
+    image:  renanmurtha/omnidroid_free:latest
+    container_name: omnidroid
+    build: ./
+    restart: always
+    # Para garantir comunicação com outros IPs na rede
+    network_mode: "bridge" 
+    environment:
+      # Nome do seu canal no twitch sem o @. Ex: nome_do_canal
+       - CHANNEL_NAME=${CHANNEL_NAME}
+
+        # Notion settings
+       - NOTION_KEY=${NOTION_KEY}
+        # A ID da página de anotações simples
+       - NOTION_PAGE_ANOTACAOES_ID=${NOTION_PAGE_ANOTACAOES_ID}
+        # A ID da página de reacts
+       - NOTION_PAGE_REACT_ID=${NOTION_PAGE_REACT_ID}
+        # A ID da página de anotações com tempo de live
+       - NOTION_PAGE_MARCADOS_ID=${NOTION_PAGE_MARCADOS_ID}
+
+        # Limite de reacts diário por usuário
+       - REACT_DAILY_LIMIT=3
+
+    # Para comunicação com host machine (ex: localhost)        
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    # Não alterar (persistência de dados)
+    volumes:
+      - ./bot/data/database:/omnidroid/bot/data/database

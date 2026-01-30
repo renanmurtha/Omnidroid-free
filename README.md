@@ -4,6 +4,7 @@
 [![Notion API](https://img.shields.io/badge/Notion_API-000000?style=for-the-badge&logo=notion&logoColor=white)](https://developers.notion.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 [![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)](https://www.json.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
 
 ---
@@ -147,5 +148,28 @@ Renomeie `.env.exemple` para `.env` e configure:
   - `npm start`: Inicia via node (Ambiente de produção).
 - **Alternativa via PM2** (Servidor):
   - `pm2 start index.js --name omnidroids --env production`
+
+---
+
+## 🐳 Deploy com Docker Compose
+
+Para executar o Omnidroids usando Docker Compose:
+
+1. Certifique-se de ter o Docker e o Docker Compose instalados.
+2. Configure o arquivo `docker-compose.yml` conforme necessário para o seu ambiente (verifique variáveis).
+3. Configure o arquivo `.env` conforme instruções anteriores.
+4. Execute o comando abaixo na raiz do projeto:
+
+```
+  docker compose up -d
+```
+O serviço será iniciado em segundo plano. Para parar:
+```
+  docker compose down
+```
+
+Você pode customizar variáveis de ambiente no arquivo `.env` para ajustar o comportamento do bot.
+
+> 💡 O arquivo `docker-compose.yml` também pode ser utilizado em ferramentas de gerenciamento de containers, como o Portainer, para facilitar o deploy e administração do serviço via interface gráfica.
 
 ---
