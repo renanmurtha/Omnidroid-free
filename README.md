@@ -173,3 +173,29 @@ Você pode customizar variáveis de ambiente no arquivo `.env` para ajustar o co
 > 💡 O arquivo `docker-compose.yml` também pode ser utilizado em ferramentas de gerenciamento de containers, como o Portainer, para facilitar o deploy e administração do serviço via interface gráfica.
 
 ---
+
+## 🏗️ Build da Imagem Docker
+
+Para criar a imagem Docker do Omnidroids manualmente, siga os passos abaixo:
+
+1. Certifique-se de estar na raiz do projeto (onde está o arquivo `Dockerfile`).
+2. Execute o comando abaixo para construir a imagem:
+
+```
+  docker build -t omnidroids:latest .
+```
+
+- O parâmetro `-t omnidroids:latest` define o nome e a tag da imagem.
+- O ponto `.` indica que o contexto de build é a pasta atual.
+
+3. Após o build, você pode rodar o container manualmente:
+
+```
+  docker run --env-file .env -d --name omnidroids omnidroids:latest
+```
+
+- O parâmetro `--env-file .env` carrega as variáveis de ambiente do arquivo `.env`.
+- O parâmetro `-d` executa o container em segundo plano.
+- O parâmetro `--name omnidroids` define o nome do container.
+
+> 💡 Recomenda-se utilizar o Docker Compose para facilitar o gerenciamento, mas o build manual pode ser útil para testes ou deploys personalizados.

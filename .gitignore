@@ -70,3 +70,5 @@ temp/
 *.sqlite3
 *.db
 
+#docker-compose
+docker-compose-dev.yml
